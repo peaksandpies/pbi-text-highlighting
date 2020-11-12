@@ -7,7 +7,7 @@ var powerbi: any = window[powerbiKey];
 
 var texthighlighting91B8B744A2EC43B88578F46607E672D3_DEBUG: IVisualPlugin = {
     name: 'texthighlighting91B8B744A2EC43B88578F46607E672D3_DEBUG',
-    displayName: 'texthighlighting',
+    displayName: 'Power BI Text Highlighting',
     class: 'Visual',
     apiVersion: '2.6.0',
     create: (options: VisualConstructorOptions) => {
