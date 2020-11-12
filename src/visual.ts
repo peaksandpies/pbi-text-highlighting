@@ -39,19 +39,19 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 import { VisualSettings } from "./settings";
 export class Visual implements IVisual {
     private target: HTMLElement;
-    private updateCount: number;
+    private textData: string[];
     private settings: VisualSettings;
     private textNode: Text;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
         this.target = options.element;
-        this.updateCount = 0;
+        this.textData = ['positive', 'neutral', 'negative'];
         if (document) {
             const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Update count:"));
+            new_p.appendChild(document.createTextNode("Lol count:"));
             const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.updateCount.toString());
+            this.textNode = document.createTextNode(this.textData.join(' '));
             new_em.appendChild(this.textNode);
             new_p.appendChild(new_em);
             this.target.appendChild(new_p);
@@ -62,7 +62,7 @@ export class Visual implements IVisual {
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         console.log('Visual update', options);
         if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
+            this.textNode.textContent = (this.textData).join(' ');
         }
     }
 

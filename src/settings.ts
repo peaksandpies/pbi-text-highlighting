@@ -35,7 +35,7 @@ export class VisualSettings extends DataViewObjectsParser {
 
     export class dataPointSettings {
      // Default color
-      public defaultColor: string = "";
+      public defaultColor: string = "#c3c3c3";
      // Show all
       public showAllDataPoints: boolean = true;
      // Fill
@@ -43,6 +43,5 @@ export class VisualSettings extends DataViewObjectsParser {
      // Color saturation
       public fillRule: string = "";
      // Text Size
-      public fontSize: number = 12;
+      public fontSize: number = 16;
      }
-

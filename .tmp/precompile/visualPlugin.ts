@@ -10,7 +10,7 @@ var texthighlighting91B8B744A2EC43B88578F46607E672D3_DEBUG: IVisualPlugin = {
     displayName: 'texthighlighting',
     class: 'Visual',
     apiVersion: '2.6.0',
-    create: (options?: VisualConstructorOptions) => {
+    create: (options: VisualConstructorOptions) => {
         if (Visual) {
             return new Visual(options);
         }

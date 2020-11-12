@@ -1,1 +1,25 @@
-{"visual":{"name":"texthighlighting","displayName":"texthighlighting","guid":"texthighlighting91B8B744A2EC43B88578F46607E672D3","visualClassName":"Visual","version":"1.0.0","description":"","supportUrl":"","gitHubUrl":""},"apiVersion":"2.6.0","author":{"name":"","email":""},"assets":{"icon":"assets/icon.png"},"externalJS":null,"style":"style/visual.less","capabilities":"capabilities.json","dependencies":null,"stringResources":[]}
+{
+  "visual": {
+    "name": "texthighlighting",
+    "displayName": "Power BI Text Highlighting",
+    "guid": "texthighlighting91B8B744A2EC43B88578F46607E672D3",
+    "visualClassName": "Visual",
+    "version": "1.0.0",
+    "description": "",
+    "supportUrl": "",
+    "gitHubUrl": ""
+  },
+  "apiVersion": "2.6.0",
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": null,
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": []
+}
