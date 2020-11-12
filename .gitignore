@@ -20,7 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-.tmp
+/.tmp/
 
 serviceAccount.json
 
