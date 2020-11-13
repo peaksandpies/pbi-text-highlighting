@@ -44,7 +44,6 @@ export class Visual implements IVisual {
   private sentimentData: any[]
   private settings: VisualSettings
   private textNode: Text
-  private container: HTMLElement = document.createElement("div")
 
   constructor(options: VisualConstructorOptions) {
     console.log('VisualConstructorOptions')
@@ -60,9 +59,12 @@ export class Visual implements IVisual {
     this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
     const fontSize = `${this.settings.dataPoint.fontSize}px`
     const fontFamily = this.settings.dataPoint.fontFamily
+    const lineHeight = this.settings.dataPoint.lineHeight.toString()
     const posColor = this.settings.dataPoint.positiveSentimentColor
     const negColor = this.settings.dataPoint.negativeSentimentColor
     const neuColor = this.settings.dataPoint.neutralSentimentColor
+
+    console.log(options)
 
     // extract the values from the `Text Data` field
     const textValues = options.dataViews[0].categorical.categories[0].values
@@ -75,6 +77,7 @@ export class Visual implements IVisual {
     var paragraphElement: HTMLElement = document.createElement("p")
     paragraphElement.style.fontFamily = fontFamily
     paragraphElement.style.fontSize = fontSize
+    paragraphElement.style.lineHeight = lineHeight
 
     if (document && this.textData.length === this.sentimentData.length) {
       this.textData.forEach((token, i) => {

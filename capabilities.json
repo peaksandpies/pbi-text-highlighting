@@ -60,6 +60,13 @@
                         }
                     }
                 },
+                "lineHeight": {
+                    "displayName": "Line Height",
+                    "type": {
+                        "numeric": true
+                    }
+
+                },
                  "fontSize": {
                     "displayName": "Text Size",
                     "type": {

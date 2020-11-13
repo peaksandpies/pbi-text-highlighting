@@ -40,6 +40,7 @@ export class dataPointSettings {
   public negativeSentimentColor: string = "#FFC8C7";
 
   // Default text Size
-  public fontSize: number = 32;
-  public fontFamily: string = "Times New Roman"
+  public fontSize: number = 16;
+  public lineHeight: number = 1.5;
+  public fontFamily: string = "Arial"
 }
