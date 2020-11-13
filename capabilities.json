@@ -2,21 +2,36 @@
     "dataRoles": [
         {
             "displayName": "Text Data",
-            "name": "category",
-            "kind": "Grouping"
+            "name": "text",
+            "kind": "Grouping",
+            "description": "Your Text Data",
+            "requiredTypes": [
+                {
+                    "text": true
+                }
+            ]
         },
         {
             "displayName": "Sentiment Data",
-            "name": "measure",
-            "kind": "Measure"
+            "name": "sentiment",
+            "kind": "Measure",
+            "description": "Your Sentiment Data",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
         }
     ],
     "objects": {
         "dataPoint": {
-            "displayName": "Data colors",
+            "displayName": "Options",
             "properties": {
-                "defaultColor": {
-                    "displayName": "Default color",
+                "neutralSentimentColor": {
+                    "displayName": "Neutral Sentiment",
                     "type": {
                         "fill": {
                             "solid": {
@@ -25,14 +40,8 @@
                         }
                     }
                 },
-                "showAllDataPoints": {
-                    "displayName": "Show all",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "fill": {
-                    "displayName": "Fill",
+                "positiveSentimentColor": {
+                    "displayName": "Positive Sentiment",
                     "type": {
                         "fill": {
                             "solid": {
@@ -41,10 +50,14 @@
                         }
                     }
                 },
-                "fillRule": {
-                    "displayName": "Color saturation",
+                "negativeSentimentColor": {
+                    "displayName": "Negative Sentiment",
                     "type": {
-                        "fill": {}
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 },
                  "fontSize": {
@@ -63,7 +76,7 @@
             "categorical": {
                 "categories": {
                     "for": {
-                        "in": "category"
+                        "in": "text"
                     },
                     "dataReductionAlgorithm": {
                         "top": {}
@@ -73,7 +86,7 @@
                     "select": [
                         {
                             "bind": {
-                                "to": "measure"
+                                "to": "sentiment"
                             }
                         }
                     ]

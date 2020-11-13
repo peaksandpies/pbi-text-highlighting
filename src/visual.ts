@@ -23,59 +23,94 @@
 *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 *  THE SOFTWARE.
 */
-"use strict";
+"use strict"
 
-import "core-js/stable";
-import "./../style/visual.less";
-import powerbi from "powerbi-visuals-api";
-import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbi.extensibility.visual.IVisual;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstance = powerbi.VisualObjectInstance;
-import DataView = powerbi.DataView;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+import "core-js/stable"
+import "./../style/visual.less"
+import powerbi from "powerbi-visuals-api"
+import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
+import IVisual = powerbi.extensibility.visual.IVisual
+import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions
+import VisualObjectInstance = powerbi.VisualObjectInstance
+import DataView = powerbi.DataView
+import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject
 
-import { VisualSettings } from "./settings";
+import { VisualSettings } from "./settings"
+
 export class Visual implements IVisual {
-    private target: HTMLElement;
-    private textData: string[];
-    private settings: VisualSettings;
-    private textNode: Text;
+  private target: HTMLElement
+  private textData: any[]
+  private sentimentData: any[]
+  private settings: VisualSettings
+  private textNode: Text
+  private container: HTMLElement = document.createElement("div")
 
-    constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
-        this.target = options.element;
-        this.textData = ['positive', 'neutral', 'negative'];
-        if (document) {
-            const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Lol count:"));
-            const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.textData.join(' '));
-            new_em.appendChild(this.textNode);
-            new_p.appendChild(new_em);
-            this.target.appendChild(new_p);
+  constructor(options: VisualConstructorOptions) {
+    console.log('VisualConstructorOptions')
+    console.dir(options, { depth: 10 })
+    this.target = options.element
+  }
+
+  public update(options: VisualUpdateOptions) {
+    // remove all existings html nodes from target
+    this.target.querySelectorAll('*').forEach(node => node.remove())
+
+    // settings.ts file
+    this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
+    // console.log('Settings')
+    // console.dir(this.settings, { depth: 10 })
+
+    console.log('Visual update')
+    console.dir(options, { depth: 10 })
+
+    // extract the values from the `Text Data` field
+    const textValues = options.dataViews[0].categorical.categories[0].values
+    this.textData = textValues
+
+    // extract the values from the `Sentiment Data` field
+    const sentimentValues = options.dataViews[0].categorical.values[0].values
+    this.sentimentData = sentimentValues
+
+    var paragraphElement : HTMLElement = document.createElement("p");
+    if (document && this.textData.length === this.sentimentData.length) {
+      this.textData.forEach((token, i) => {
+        const spanElement: HTMLElement = document.createElement("span")
+        const fontSize = this.settings.dataPoint.fontSize.toString()
+        spanElement.style.fontSize = fontSize
+        const sentiment = this.sentimentData[i]
+
+        this.textNode = document.createTextNode(`${token} `)
+
+        spanElement.appendChild(this.textNode)
+        switch (true) {
+          case sentiment > 0:
+            spanElement.style.color = this.settings.dataPoint.positiveSentimentColor
+            break
+          case sentiment < 0:
+            spanElement.style.color = this.settings.dataPoint.negativeSentimentColor
+            break
+          default:
+            spanElement.style.color = this.settings.dataPoint.neutralSentimentColor
+            break
         }
+        paragraphElement.appendChild(spanElement)
+      })
+      console.log(this.target)
+      this.target.appendChild(paragraphElement)
     }
+  }
 
-    public update(options: VisualUpdateOptions) {
-        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options);
-        if (this.textNode) {
-            this.textNode.textContent = (this.textData).join(' ');
-        }
-    }
+  private static parseSettings(dataView: DataView): VisualSettings {
+    return <VisualSettings>VisualSettings.parse(dataView)
+  }
 
-    private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
-    }
-
-    /**
-     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-     * objects and properties you want to expose to the users in the property pane.
-     *
-     */
-    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
-    }
+  /**
+   * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
+   * objects and properties you want to expose to the users in the property pane.
+   *
+   */
+  public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
+    return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options)
+  }
 }
