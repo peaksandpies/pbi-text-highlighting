@@ -27,6 +27,8 @@
 
 import "core-js/stable"
 import "./../style/visual.less"
+import { VisualSettings } from "./settings"
+
 import powerbi from "powerbi-visuals-api"
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
@@ -36,8 +38,6 @@ import VisualObjectInstance = powerbi.VisualObjectInstance
 import DataView = powerbi.DataView
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject
 
-import { VisualSettings } from "./settings"
-
 export class Visual implements IVisual {
   private target: HTMLElement
   private textData: any[]
@@ -46,8 +46,6 @@ export class Visual implements IVisual {
   private textNode: Text
 
   constructor(options: VisualConstructorOptions) {
-    console.log('VisualConstructorOptions')
-    console.dir(options, { depth: 10 })
     this.target = options.element
   }
 
@@ -64,8 +62,6 @@ export class Visual implements IVisual {
     const negColor = this.settings.dataPoint.negativeSentimentColor
     const neuColor = this.settings.dataPoint.neutralSentimentColor
 
-    console.log(options)
-
     // extract the values from the `Text Data` field
     const textValues = options.dataViews[0].categorical.categories[0].values
     this.textData = textValues
@@ -74,20 +70,17 @@ export class Visual implements IVisual {
     const sentimentValues = options.dataViews[0].categorical.values[0].values
     this.sentimentData = sentimentValues
 
-    var paragraphElement: HTMLElement = document.createElement("p")
+    const paragraphElement: HTMLElement = document.createElement("p")
     paragraphElement.style.fontFamily = fontFamily
     paragraphElement.style.fontSize = fontSize
     paragraphElement.style.lineHeight = lineHeight
 
     if (document && this.textData.length === this.sentimentData.length) {
       this.textData.forEach((token, i) => {
-
         const spanElement: HTMLElement = document.createElement("span")
-        const sentiment = this.sentimentData[i]
-
         this.textNode = document.createTextNode(`${token} `)
         spanElement.appendChild(this.textNode)
-
+        const sentiment = this.sentimentData[i]
         switch (true) {
           case sentiment > 0:
             spanElement.style.color = posColor
@@ -99,8 +92,10 @@ export class Visual implements IVisual {
             spanElement.style.color = neuColor
             break
         }
+        // add the current span-node to the p-element
         paragraphElement.appendChild(spanElement)
       })
+      // add the p-element to the target-div
       this.target.appendChild(paragraphElement)
     }
   }
@@ -112,7 +107,6 @@ export class Visual implements IVisual {
   /**
    * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
    * objects and properties you want to expose to the users in the property pane.
-   *
    */
   public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
     return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options)
