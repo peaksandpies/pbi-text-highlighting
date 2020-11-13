@@ -58,6 +58,10 @@ export class Visual implements IVisual {
 
     // settings.ts file
     this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
+    // const fontSize = this.settings.dataPoint.fontSizeValue.toString()
+    const posColor = this.settings.dataPoint.positiveSentimentColor
+    const negColor = this.settings.dataPoint.negativeSentimentColor
+    const neuColor = this.settings.dataPoint.neutralSentimentColor
     // console.log('Settings')
     // console.dir(this.settings, { depth: 10 })
 
@@ -72,31 +76,41 @@ export class Visual implements IVisual {
     const sentimentValues = options.dataViews[0].categorical.values[0].values
     this.sentimentData = sentimentValues
 
-    var paragraphElement : HTMLElement = document.createElement("p");
+    var paragraphElement: HTMLElement = document.createElement("p");
+
+    // paragraphElement.style.fontSize = fontSize
+
+    console.log('paragraphElement', paragraphElement)
+
+
     if (document && this.textData.length === this.sentimentData.length) {
       this.textData.forEach((token, i) => {
+
         const spanElement: HTMLElement = document.createElement("span")
-        const fontSize = this.settings.dataPoint.fontSize.toString()
-        spanElement.style.fontSize = fontSize
+        console.log('spanElement:', spanElement)
         const sentiment = this.sentimentData[i]
 
         this.textNode = document.createTextNode(`${token} `)
-
         spanElement.appendChild(this.textNode)
+
         switch (true) {
           case sentiment > 0:
-            spanElement.style.color = this.settings.dataPoint.positiveSentimentColor
+            // spanElement.style.fontSize = fontSize
+            spanElement.style.color = posColor
             break
           case sentiment < 0:
-            spanElement.style.color = this.settings.dataPoint.negativeSentimentColor
+            // spanElement.style.fontSize = fontSize
+            spanElement.style.color = negColor
             break
           default:
-            spanElement.style.color = this.settings.dataPoint.neutralSentimentColor
+            // spanElement.style.fontSize = fontSize
+            spanElement.style.color = neuColor
             break
         }
         paragraphElement.appendChild(spanElement)
       })
-      console.log(this.target)
+
+      console.log(paragraphElement)
       this.target.appendChild(paragraphElement)
     }
   }

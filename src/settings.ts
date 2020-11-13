@@ -38,6 +38,8 @@ export class dataPointSettings {
   public neutralSentimentColor: string = "#000000";
   public positiveSentimentColor: string = "#C6E7C8";
   public negativeSentimentColor: string = "#FFC8C7";
-  // Text Size
+
+  // Default text Size
   public fontSize: number = 32;
+  public fontFamily: string = "Times New Roman"
 }

@@ -67,6 +67,14 @@
                             "fontSize": true
                         }
                     }
+                },
+                "fontFamily": {
+                    "displayName": "Font Family",
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
                 }
             }
         }
