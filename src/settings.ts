@@ -35,9 +35,9 @@ export class VisualSettings extends DataViewObjectsParser {
 
 export class dataPointSettings {
   // Default colors
-  public neutralSentimentColor: string = "#000000";
-  public positiveSentimentColor: string = "#C6E7C8";
-  public negativeSentimentColor: string = "#FFC8C7";
+  public neutralSentimentColor: string = "#303030";
+  public positiveSentimentColor: string = "#2CA53C";
+  public negativeSentimentColor: string = "#D20808";
 
   // Default text Size
   public fontSize: number = 16;

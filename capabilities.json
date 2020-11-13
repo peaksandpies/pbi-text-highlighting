@@ -65,9 +65,8 @@
                     "type": {
                         "numeric": true
                     }
-
                 },
-                 "fontSize": {
+                "fontSize": {
                     "displayName": "Text Size",
                     "type": {
                         "formatting": {
@@ -108,5 +107,8 @@
                 }
             }
         }
-    ]
+    ],
+    "sorting": {
+        "default": {}
+    }
 }
