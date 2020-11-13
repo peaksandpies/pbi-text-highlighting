@@ -41,9 +41,11 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 export class Visual implements IVisual {
   private target: HTMLElement
   private textData: any[]
+  private categoryData: any[]
   private sentimentData: any[]
   private settings: VisualSettings
   private textNode: Text
+  // private initText: powerbi.PrimitiveValue
 
   constructor(options: VisualConstructorOptions) {
     this.target = options.element
@@ -63,8 +65,16 @@ export class Visual implements IVisual {
     const neuColor = this.settings.dataPoint.neutralSentimentColor
 
     // extract the values from the `Text Data` field
-    const textValues = options.dataViews[0].categorical.categories[0].values
+    const textValues = options.dataViews[0].categorical.categories[0]
+      ? options.dataViews[0].categorical.categories[0].values
+      : null
+
+      const categoryValues = options.dataViews[0].categorical.categories[1]
+      ? options.dataViews[0].categorical.categories[1].values
+      : null
+
     this.textData = textValues
+    this.categoryData = categoryValues
 
     // extract the values from the `Sentiment Data` field
     const sentimentValues = options.dataViews[0].categorical.values[0].values

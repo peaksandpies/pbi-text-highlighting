@@ -2,9 +2,19 @@
     "dataRoles": [
         {
             "displayName": "Text Data",
-            "name": "text",
+            "name": "textData",
             "kind": "Grouping",
             "description": "Your Text Data",
+            "requiredTypes": [
+                {
+                    "text": true
+                }
+            ]
+        },
+        {
+            "displayName": "Review Data",
+            "name": "reviewData",
+            "kind": "Grouping",
             "requiredTypes": [
                 {
                     "text": true
@@ -90,7 +100,7 @@
             "categorical": {
                 "categories": {
                     "for": {
-                        "in": "text"
+                        "in": "textData"
                     },
                     "dataReductionAlgorithm": {
                         "top": {}
