@@ -46,6 +46,7 @@ export class Visual implements IVisual {
     private textNode: Text
 
     constructor(options: VisualConstructorOptions) {
+        options.element.style.overflow = "auto"
         this.target = options.element
     }
 
