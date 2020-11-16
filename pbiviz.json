@@ -1,20 +1,19 @@
 {
   "visual": {
-    "name": "pp-pbi-text-highlighting",
-    "displayName": "Text Highlighting by Peaks & Pies",
-    "guid": "texthighlighting91B8B744A2EC43B88578F46607E672D3",
+    "name": "pbi-text-highlighting",
+    "displayName": "Text Highlighting",
+    "guid": "texthighlightingAEE72038AFFF45189939681109193A03",
     "visualClassName": "Visual",
     "version": "1.0.0",
-    "description": "Text Highlighting by Peaks & Pies",
-    "supportUrl": "https://github.com/peaksandpies/pbi-text-highlighting",
+    "description": "Text Highlighting by Peaks and Pies",
+    "supportUrl": "https://www.peaksandpies.com",
     "gitHubUrl": "https://github.com/peaksandpies/pbi-text-highlighting"
   },
+  "apiVersion": "2.6.0",
   "author": {
     "name": "Markus Feiks",
-    "email": "markus@peaksandpies.com",
-    "url": "https://www.peaksandpies.com"
+    "email": "markus@peaksandpies.com"
   },
-  "apiVersion": "2.6.0",
   "assets": {
     "icon": "assets/icon.png"
   },
