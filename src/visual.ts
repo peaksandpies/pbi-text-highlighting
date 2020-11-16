@@ -39,86 +39,80 @@ import DataView = powerbi.DataView
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject
 
 export class Visual implements IVisual {
-  private target: HTMLElement
-  private textData: any[]
-  private categoryData: any[]
-  private sentimentData: any[]
-  private settings: VisualSettings
-  private textNode: Text
-  // private initText: powerbi.PrimitiveValue
+    private target: HTMLElement
+    private textData: any[]
+    private sentimentData: any[]
+    private settings: VisualSettings
+    private textNode: Text
+    // private initText: powerbi.PrimitiveValue
 
-  constructor(options: VisualConstructorOptions) {
-    this.target = options.element
-  }
-
-  public update(options: VisualUpdateOptions) {
-    // remove all existings html nodes from target
-    this.target.querySelectorAll('*').forEach(node => node.remove())
-
-    // settings.ts file
-    this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
-    const fontSize = `${this.settings.dataPoint.fontSize}px`
-    const fontFamily = this.settings.dataPoint.fontFamily
-    const lineHeight = this.settings.dataPoint.lineHeight.toString()
-    const posColor = this.settings.dataPoint.positiveSentimentColor
-    const negColor = this.settings.dataPoint.negativeSentimentColor
-    const neuColor = this.settings.dataPoint.neutralSentimentColor
-
-    // extract the values from the `Text Data` field
-    const textValues = options.dataViews[0].categorical.categories[0]
-      ? options.dataViews[0].categorical.categories[0].values
-      : null
-
-      const categoryValues = options.dataViews[0].categorical.categories[1]
-      ? options.dataViews[0].categorical.categories[1].values
-      : null
-
-    this.textData = textValues
-    this.categoryData = categoryValues
-
-    // extract the values from the `Sentiment Data` field
-    const sentimentValues = options.dataViews[0].categorical.values[0].values
-    this.sentimentData = sentimentValues
-
-    const paragraphElement: HTMLElement = document.createElement("p")
-    paragraphElement.style.fontFamily = fontFamily
-    paragraphElement.style.fontSize = fontSize
-    paragraphElement.style.lineHeight = lineHeight
-
-    if (document && this.textData.length === this.sentimentData.length) {
-      this.textData.forEach((token, i) => {
-        const spanElement: HTMLElement = document.createElement("span")
-        this.textNode = document.createTextNode(`${token} `)
-        spanElement.appendChild(this.textNode)
-        const sentiment = this.sentimentData[i]
-        switch (true) {
-          case sentiment > 0:
-            spanElement.style.color = posColor
-            break
-          case sentiment < 0:
-            spanElement.style.color = negColor
-            break
-          default:
-            spanElement.style.color = neuColor
-            break
-        }
-        // add the current span-node to the p-element
-        paragraphElement.appendChild(spanElement)
-      })
-      // add the p-element to the target-div
-      this.target.appendChild(paragraphElement)
+    constructor(options: VisualConstructorOptions) {
+        this.target = options.element
     }
-  }
 
-  private static parseSettings(dataView: DataView): VisualSettings {
-    return <VisualSettings>VisualSettings.parse(dataView)
-  }
+    public update(options: VisualUpdateOptions) {
+        // remove all existings html nodes from target
+        this.target.querySelectorAll('*').forEach(node => node.remove())
 
-  /**
-   * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-   * objects and properties you want to expose to the users in the property pane.
-   */
-  public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-    return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options)
-  }
+        // settings.ts file
+        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
+        const fontSize = `${this.settings.dataPoint.fontSize}px`
+        const fontFamily = this.settings.dataPoint.fontFamily
+        const lineHeight = this.settings.dataPoint.lineHeight.toString()
+        const posColor = this.settings.dataPoint.positiveSentimentColor
+        const negColor = this.settings.dataPoint.negativeSentimentColor
+        const neuColor = this.settings.dataPoint.neutralSentimentColor
+
+        // extract the values from the `Text Data` field
+        const textValues = options.dataViews[0].categorical.categories[0]
+            ? options.dataViews[0].categorical.categories[0].values
+            : null
+
+        this.textData = textValues
+
+        // extract the values from the `Sentiment Data` field
+        const sentimentValues = options.dataViews[0].categorical.values[0].values
+        this.sentimentData = sentimentValues
+
+        const paragraphElement: HTMLElement = document.createElement("p")
+        paragraphElement.style.fontFamily = fontFamily
+        paragraphElement.style.fontSize = fontSize
+        paragraphElement.style.lineHeight = lineHeight
+
+        if (document && this.textData.length === this.sentimentData.length) {
+            this.textData.forEach((token, i) => {
+                const spanElement: HTMLElement = document.createElement("span")
+                this.textNode = document.createTextNode(`${token} `)
+                spanElement.appendChild(this.textNode)
+                const sentiment = this.sentimentData[i]
+                switch (true) {
+                    case sentiment > 0:
+                        spanElement.style.color = posColor
+                        break
+                    case sentiment < 0:
+                        spanElement.style.color = negColor
+                        break
+                    default:
+                        spanElement.style.color = neuColor
+                        break
+                }
+                // add the current span-node to the p-element
+                paragraphElement.appendChild(spanElement)
+            })
+            // add the p-element to the target-div
+            this.target.appendChild(paragraphElement)
+        }
+    }
+
+    private static parseSettings(dataView: DataView): VisualSettings {
+        return <VisualSettings>VisualSettings.parse(dataView)
+    }
+
+    /**
+     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
+     * objects and properties you want to expose to the users in the property pane.
+     */
+    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
+        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options)
+    }
 }

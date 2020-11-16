@@ -12,16 +12,6 @@
             ]
         },
         {
-            "displayName": "Review Data",
-            "name": "reviewData",
-            "kind": "Grouping",
-            "requiredTypes": [
-                {
-                    "text": true
-                }
-            ]
-        },
-        {
             "displayName": "Sentiment Data",
             "name": "sentiment",
             "kind": "Measure",

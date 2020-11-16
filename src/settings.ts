@@ -30,17 +30,17 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class VisualSettings extends DataViewObjectsParser {
-  public dataPoint: dataPointSettings = new dataPointSettings();
+    public dataPoint: dataPointSettings = new dataPointSettings();
 }
 
 export class dataPointSettings {
-  // Default colors
-  public neutralSentimentColor: string = "#303030";
-  public positiveSentimentColor: string = "#2CA53C";
-  public negativeSentimentColor: string = "#D20808";
+    // Default colors
+    public neutralSentimentColor: string = "#303030";
+    public positiveSentimentColor: string = "#2CA53C";
+    public negativeSentimentColor: string = "#D20808";
 
-  // Default text Size
-  public fontSize: number = 16;
-  public lineHeight: number = 1.5;
-  public fontFamily: string = "Arial"
+    // Default text Size
+    public fontSize: number = 16;
+    public lineHeight: number = 1.5;
+    public fontFamily: string = "Arial"
 }
