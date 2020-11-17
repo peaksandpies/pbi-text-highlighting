@@ -6,7 +6,7 @@
     "visualClassName": "Visual",
     "version": "1.0.0",
     "description": "Text Highlighting by Peaks and Pies",
-    "supportUrl": "https://www.peaksandpies.com",
+    "supportUrl": "https://github.com/peaksandpies/pbi-text-highlighting/blob/main/README.md",
     "gitHubUrl": "https://github.com/peaksandpies/pbi-text-highlighting"
   },
   "apiVersion": "2.6.0",
