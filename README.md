@@ -1,6 +1,7 @@
 # Text Highlighting by Peaks & Pies
 This is a custom visual for Microsoft Power BI to highlight certain words in a text. For instance, you can use this custom visual for sentiment analysis and sentiment highlighting.
 
+![Text Highlighting Screenshot](assets/screenshot.jpg)
 
 ## About the Visual
 
@@ -15,6 +16,8 @@ The visualization is based on text data and their associated sentiment values. I
 var textData = ["hello", "sweet", "but", "sometimes", "cruel", "world"]
 var sentData = [0, 1, 0, 0, -1, 0]
 ```
+
+![Text Highlighting Data Screenshot](assets/screenshot2.jpg)
 
 #### Coloring
 
