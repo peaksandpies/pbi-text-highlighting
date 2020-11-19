@@ -53,7 +53,8 @@ export class Visual implements IVisual {
     public update(options: VisualUpdateOptions) {
         // remove all existings html nodes from target
         this.target.querySelectorAll('*').forEach(node => node.remove())
-
+        console.log(options)
+        console.log(this.target)
         // extract settings
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
 
@@ -107,17 +108,9 @@ export class Visual implements IVisual {
             this.target.appendChild(paragraphElement)
         }
 
-        //Context Menu
-        this.target.on('contextmenu', () => {
-            const mouseEvent: MouseEvent = d3.event as MouseEvent;
-            const eventTarget: EventTarget = mouseEvent.target;
-            let dataPoint = d3.select(eventTarget).datum();
-            this.selectionManager.showContextMenu(dataPoint? dataPoint.selectionId : {}, {
-                x: mouseEvent.clientX,
-                y: mouseEvent.clientY
-            });
-            mouseEvent.preventDefault();
-        });
+        // Context Menu
+        const ev: MouseEvent = null
+        this.target.oncontextmenu(ev)
 
     }
 
