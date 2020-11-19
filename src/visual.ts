@@ -106,6 +106,19 @@ export class Visual implements IVisual {
             // add the p-element to the target-div
             this.target.appendChild(paragraphElement)
         }
+
+        //Context Menu
+        this.target.on('contextmenu', () => {
+            const mouseEvent: MouseEvent = d3.event as MouseEvent;
+            const eventTarget: EventTarget = mouseEvent.target;
+            let dataPoint = d3.select(eventTarget).datum();
+            this.selectionManager.showContextMenu(dataPoint? dataPoint.selectionId : {}, {
+                x: mouseEvent.clientX,
+                y: mouseEvent.clientY
+            });
+            mouseEvent.preventDefault();
+        });
+
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
