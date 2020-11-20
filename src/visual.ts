@@ -29,10 +29,16 @@ import "core-js/stable"
 import "./../style/visual.less"
 import { VisualSettings } from "./settings"
 
+import {
+    select as d3Select
+} from "d3-selection";
+type Selection<T1, T2 = T1> = d3.Selection<any, T1, any, T2>;
+const getEvent = () => require("d3-selection").event;
 import powerbi from "powerbi-visuals-api"
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 import IVisual = powerbi.extensibility.visual.IVisual
+import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions
 import VisualObjectInstance = powerbi.VisualObjectInstance
 import DataView = powerbi.DataView
@@ -40,19 +46,25 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 
 export class Visual implements IVisual {
     private target: HTMLElement
+    private div: Selection<any>
     private textData: powerbi.PrimitiveValue[]
     private sentimentData: powerbi.PrimitiveValue[]
+    private selectionManager: ISelectionManager;
     private settings: VisualSettings
     private textNode: Text
 
     constructor(options: VisualConstructorOptions) {
+        this.selectionManager = options.host.createSelectionManager();
         options.element.style.overflow = "auto"
         this.target = options.element
+
+        this.div = d3Select(this.target).append("div")
+        this.handleContextMenu()
     }
 
     public update(options: VisualUpdateOptions) {
         // remove all existings html nodes from target
-        this.target.querySelectorAll('*').forEach(node => node.remove())
+        this.div.selectAll('p').remove()
 
         // extract settings
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0])
@@ -78,47 +90,44 @@ export class Visual implements IVisual {
         const sentimentValues = options.dataViews[0].categorical.values[0].values
         this.sentimentData = sentimentValues
 
-        const paragraphElement: HTMLElement = document.createElement("p")
-        paragraphElement.style.fontFamily = fontFamily
-        paragraphElement.style.fontSize = fontSize
-        paragraphElement.style.lineHeight = lineHeight
+        // Create a Paragraph
+        const pBox = this.div.append('p')
+        pBox.style('font-family', fontFamily)
+        pBox.style('font-size', fontSize)
+        pBox.style('line-height', lineHeight)
 
         if (document && this.textData.length === this.sentimentData.length) {
+            // Fill the Paragraph with text and style it 
             this.textData.forEach((token, i) => {
-                const spanElement: HTMLElement = document.createElement("span")
-                this.textNode = document.createTextNode(`${token} `)
-                spanElement.appendChild(this.textNode)
+                let spanElement = pBox.append('span')
+                spanElement.text(`${token} `)
                 const sentiment = this.sentimentData[i]
                 switch (true) {
                     case sentiment > 0:
-                        spanElement.style.color = posColor
+                        spanElement.style('color', posColor)
                         break
                     case sentiment < 0:
-                        spanElement.style.color = negColor
+                        spanElement.style('color', negColor)
                         break
                     default:
-                        spanElement.style.color = neuColor
+                        spanElement.style('color', neuColor)
                         break
                 }
-                // add the current span-node to the p-element
-                paragraphElement.appendChild(spanElement)
             })
-            // add the p-element to the target-div
-            this.target.appendChild(paragraphElement)
         }
+    }
 
-        //Context Menu
-        this.target.on('contextmenu', () => {
-            const mouseEvent: MouseEvent = d3.event as MouseEvent;
+    private handleContextMenu() {
+        this.div.on('contextmenu', () => {
+            const mouseEvent: MouseEvent = getEvent();
             const eventTarget: EventTarget = mouseEvent.target;
-            let dataPoint = d3.select(eventTarget).datum();
-            this.selectionManager.showContextMenu(dataPoint? dataPoint.selectionId : {}, {
+            let dataPoint: any = d3Select(<d3.BaseType>eventTarget).datum();
+            this.selectionManager.showContextMenu(dataPoint ? dataPoint.selectionId : {}, {
                 x: mouseEvent.clientX,
                 y: mouseEvent.clientY
             });
             mouseEvent.preventDefault();
         });
-
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
